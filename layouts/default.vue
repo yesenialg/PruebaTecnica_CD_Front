@@ -1,117 +1,125 @@
 <template>
-  <v-app dark>
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
-      app
-    >
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-app-bar
-      :clipped-left="clipped"
-      fixed
-      app
-    >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn
-        icon
-        @click.stop="miniVariant = !miniVariant"
-      >
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="clipped = !clipped"
-      >
-        <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="fixed = !fixed"
-      >
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title" />
-      <v-spacer />
-      <v-btn
-        icon
-        @click.stop="rightDrawer = !rightDrawer"
-      >
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
-    </v-app-bar>
-    <v-main>
-      <v-container>
-        <nuxt />
-      </v-container>
-    </v-main>
-    <v-navigation-drawer
-      v-model="rightDrawer"
-      :right="right"
-      temporary
-      fixed
-    >
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-footer
-      :absolute="!fixed"
-      app
-    >
-      <span>&copy; {{ new Date().getFullYear() }}</span>
+  <v-app style="#BFB99B">
+    <br />
+    <center>
+      <h1 style="font-family: Copperplate">Prueba Técnica</h1>
+    </center>
+    <br />
+
+    <v-footer :absolute="!fixed" app>
+      <v-spacer></v-spacer>
+      <span> &copy; {{ new Date().getFullYear() }}</span>
+      <small>| Yesenia López</small>
+      <v-spacer></v-spacer>
     </v-footer>
+
+    <template>
+      <v-card
+        class="mx-auto"
+        style="width: 400px"
+        elevation="12"
+        color="#F2F2F2"
+      >
+        <v-toolbar color="#D95F69">
+          <v-card-title class="#white--text">
+            <center>Iniciar sesion</center>
+          </v-card-title>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+
+        <v-form
+          ref="formLogin"
+          v-model="valid"
+          class="pa-3 pt-4"
+          lazy-validation
+          color="#ccf2f4"
+        >
+          <v-spacer></v-spacer>
+
+          <v-text-field
+            v-model="usuario.correo"
+            :rules="rules.required"
+            label="Correo"
+            style="height: 100px"
+            required
+          ></v-text-field>
+
+          <v-text-field
+            v-model="usuario.password"
+            :rules="rules.required"
+            label="Contraseña"
+            style="height: 100px"
+            type="password"
+            required
+          ></v-text-field>
+
+          <v-select
+            solo-inverted
+            hide-details
+            :items="rol"
+            label="Elegir rol"
+            v-model="usuario.rol"
+          ></v-select>
+        </v-form>
+        <v-divider></v-divider>
+
+        <v-card-actions class="justify-center">
+          <v-row>
+            <v-col cols="12" md="4">
+              <v-btn primary large block elevation="7" color="#F2E18D">
+                Registrar
+              </v-btn>
+            </v-col>
+
+            <v-col cols="12" md="4">
+              <v-btn
+                primary
+                large
+                block
+                color="#0c354a"
+                class="ma-1"
+                v-bind="attrs"
+                v-on="on"
+                plain
+                @click="login()"
+              >
+                ¿No tienes una cuenta?
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-card-actions>
+        <v-spacer></v-spacer>
+      </v-card>
+    </template>
   </v-app>
 </template>
 
 <script>
 export default {
-  data () {
-    return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
-        }
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js'
+  data: () => ({
+    valid: true,
+    usuario: {
+      correo: "",
+      password: "",
+      rol: "",
+    },
+    admin: { codigo: "" },
+    rules: {
+      required: [(v) => !!v || "El campo es obligatorio"],
+    },
+    rol: ["Administrador", "Coordinador", "Usuario"],
+  }),
+
+  methods: {
+    async login() {
+
     }
-  }
-}
+  },
+};
 </script>
+<style>
+#app {
+  background: #bfb99b;
+  background-size: cover;
+}
+</style>
