@@ -4,6 +4,7 @@
       <v-col cols="12">
         <center>
           <v-spacer></v-spacer>
+          <componenteDetallesUsuario/>
         </center>
       </v-col>
     </v-row>
@@ -11,8 +12,12 @@
 </template>
 
 <script>
+import componenteDetallesUsuario from "../../components/DetallesUsuario";
 export default {
   layout: "Administrador",
+  components: {
+    componenteDetallesUsuario,
+  },
 };
 </script>
 
