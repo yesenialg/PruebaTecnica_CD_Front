@@ -18,20 +18,25 @@
 
       <v-text-field
         v-model="usuario.correo"
-        :rules="rules.required"
+        :rules="rules.emailRules"
         label="Correo"
         style="height: 100px"
         required
       ></v-text-field>
 
       <v-text-field
-        v-model="usuario.password"
-        :rules="rules.required"
-        label="Contraseña"
-        style="height: 100px"
-        type="password"
-        required
-      ></v-text-field>
+            v-model="usuario.password"
+            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+            :rules="[rules.required, rules.min]"
+            :type="show1 ? 'text' : 'password'"
+            name="input-10-1"
+            label="Password"
+            style="height: 100px"
+            hint="At least 8 characters"
+            counter            
+            required
+            @click:append="show1 = !show1"
+          ></v-text-field>
 
       <v-select
         solo-inverted
@@ -79,11 +84,17 @@ export default {
     usuario: {
       correo: "",
       password: "",
+      show1: false,
       rol: "",
     },
     admin: { codigo: "" },
     rules: {
       required: [(v) => !!v || "El campo es obligatorio"],
+      min: v => v.length >= 8 || 'Min 8 characters',
+      emailRules: [
+        v => !!v || 'El campo es obligatorio',
+        v => /.+@.+\..+/.test(v) || 'Correo invalido',
+      ],
     },
     rol: ["Administrador", "Coordinador", "Usuario"],
   }),

@@ -72,6 +72,7 @@
             :rules="rules.required"
             label="Celular"
             style="height: 100px"
+            type="number"
             required
           ></v-text-field>
         </v-col>
@@ -81,7 +82,7 @@
         <v-col cols="12" md="4">
           <v-text-field
             v-model="usuario.correo"
-            :rules="rules.required"
+            :rules="rules.emailRules"
             label="Correo"
             style="height: 100px"
             required
@@ -90,10 +91,16 @@
         <v-col cols="12" md="4">
           <v-text-field
             v-model="usuario.password"
-            :rules="rules.required"
+            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+            :rules="[rules.required, rules.min]"
+            :type="show1 ? 'text' : 'password'"
+            name="input-10-1"
             label="Password"
             style="height: 100px"
+            hint="At least 8 characters"
+            counter            
             required
+            @click:append="show1 = !show1"
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="4">
@@ -135,6 +142,7 @@ export default {
     hasSaved: false,
     isEditing: null,
     model: null,
+    show1: false,
     usuario: {
       tipoId: "",
       numeroId: "",
@@ -155,7 +163,13 @@ export default {
     rol: ["Administrador", "Coordinador", "Usuario"],
     rules: {
       required: [(v) => !!v || "El campo es obligatorio"],
+      min: v => v.length >= 8 || 'Min 8 characters',
+      emailRules: [
+        v => !!v || 'El campo es obligatorio',
+        v => /.+@.+\..+/.test(v) || 'Correo invalido',
+      ],
     },
+    
   }),
 
   methods: {
