@@ -1,8 +1,23 @@
-<template></template>
+<template>
+  <v-container fill-height>
+    <v-row align="center" justify="center">
+      <v-col cols="12">
+        <center>
+          <v-spacer></v-spacer>
+          <componenteRegistro />
+        </center>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
 
 <script>
+import componenteRegistro from "../components/Registro";
 export default {
-  layout: "registro",
+  layout: "UsuarioGeneral",
+  components: {
+    componenteRegistro,
+  },
 };
 </script>
 

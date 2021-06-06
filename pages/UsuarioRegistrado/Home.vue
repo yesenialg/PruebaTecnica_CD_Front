@@ -4,7 +4,11 @@
       <v-col cols="12">
         <center>
           <v-spacer></v-spacer>
-          <componenteLogin />
+          <img
+            src="../../static/Bienvenido.PNG"
+            max-width="64"
+            min-width="64"
+          />
         </center>
       </v-col>
     </v-row>
@@ -12,12 +16,8 @@
 </template>
 
 <script>
-import componenteLogin from "../components/Login";
 export default {
-  layout: "UsuarioGeneral",
-  components: {
-    componenteLogin,
-  },
+  layout: "UsuarioRegistrado",
 };
 </script>
 

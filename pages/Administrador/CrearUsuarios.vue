@@ -4,7 +4,7 @@
       <v-col cols="12">
         <center>
           <v-spacer></v-spacer>
-          <componenteLogin />
+          <componenteRegistro/>
         </center>
       </v-col>
     </v-row>
@@ -12,14 +12,15 @@
 </template>
 
 <script>
-import componenteLogin from "../components/Login";
+import componenteRegistro from "../../components/Registro";
 export default {
-  layout: "UsuarioGeneral",
+  layout: "Administrador",
   components: {
-    componenteLogin,
+    componenteRegistro,
   },
 };
 </script>
 
 <style>
+
 </style>
