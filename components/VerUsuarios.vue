@@ -24,7 +24,12 @@
       :items="usuarios"
       :search="search"
       @click="verDetalles()"
-    ></v-data-table>
+    >
+      <template v-slot:top> </template>
+      <template v-slot:item.actions="{item}">
+        <v-icon small class = "mr-2" @click="verDetalles(item)"> mdi-eye </v-icon>
+      </template>
+    </v-data-table>
   </v-card>
 </template>
 
@@ -45,6 +50,7 @@ export default {
         { text: "Correo", value: "correo" },
         { text: "Celular", value: "celular" },
         { text: "Rol", value: "rol" },
+        { text: "Actions", value: "actions", sortable: false },
       ],
       usuarios: [
         {
@@ -115,7 +121,7 @@ export default {
 
   methods: {
     async verDetalles() {
-      this.$router.push("registro");
+      this.$router.push("DetallesUsuarios");
     },
   },
 };

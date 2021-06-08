@@ -25,25 +25,27 @@
       ></v-text-field>
 
       <v-text-field
-            v-model="usuario.password"
-            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-            :rules="[rules.required, rules.min]"
-            :type="show1 ? 'text' : 'password'"
-            name="input-10-1"
-            label="Password"
-            style="height: 100px"
-            hint="At least 8 characters"
-            counter            
-            required
-            @click:append="show1 = !show1"
-          ></v-text-field>
+        v-model="usuario.password"
+        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+        :rules="[rules.required, rules.min]"
+        :type="show1 ? 'text' : 'password'"
+        name="input-10-1"
+        label="Password"
+        style="height: 100px"
+        hint="At least 8 characters"
+        counter
+        required
+        @click:append="show1 = !show1"
+      ></v-text-field>
 
       <v-select
         solo-inverted
         hide-details
+        :rules="rules.required"
         :items="rol"
         label="Elegir rol"
         v-model="usuario.rol"
+        required
       ></v-select>
     </v-form>
     <v-divider></v-divider>
@@ -51,7 +53,7 @@
     <v-card-actions class="justify-center">
       <v-row>
         <v-col cols="12" md="4">
-          <v-btn primary large block elevation="7" color="#F29544">
+          <v-btn primary large block elevation="7" color="#F29544" @click="ingreso()">
             Ingresar
           </v-btn>
         </v-col>
@@ -81,19 +83,19 @@
 export default {
   data: () => ({
     valid: true,
+    show1: false,
     usuario: {
       correo: "",
       password: "",
-      show1: false,
       rol: "",
     },
     admin: { codigo: "" },
     rules: {
       required: [(v) => !!v || "El campo es obligatorio"],
-      min: v => v.length >= 8 || 'Min 8 characters',
+      min: (v) => v.length >= 8 || "Min 8 characters",
       emailRules: [
-        v => !!v || 'El campo es obligatorio',
-        v => /.+@.+\..+/.test(v) || 'Correo invalido',
+        (v) => !!v || "El campo es obligatorio",
+        (v) => /.+@.+\..+/.test(v) || "Correo invalido",
       ],
     },
     rol: ["Administrador", "Coordinador", "Usuario"],
@@ -103,6 +105,15 @@ export default {
     async irRegistro() {
       this.$router.push("registro");
     },
+    async ingreso(){
+      if (this.$refs.formLogin.validate()) {
+        console.log("Inicio guardar usuario");
+        let usuario = Object.assign({}, this.usuario);
+        console.log(usuario);
+      } else {
+        console.log("Formato incompleto");
+      }
+    }
   },
 };
 </script>

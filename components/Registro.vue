@@ -8,7 +8,7 @@
     </v-toolbar>
 
     <v-form
-      ref="formLogin"
+      ref="formRegistro"
       v-model="valid"
       class="pa-3 pt-4"
       lazy-validation
@@ -21,9 +21,11 @@
           <v-select
             solo-inverted
             hide-details
+            :rules="rules.required"
             :items="tipoId"
             label="Tipo de identificacion"
             v-model="usuario.tipoId"
+            required
           ></v-select>
         </v-col>
         <v-col cols="12" md="6">
@@ -88,7 +90,7 @@
             label="Password"
             style="height: 100px"
             hint="At least 8 characters"
-            counter            
+            counter
             required
             @click:append="show1 = !show1"
           ></v-text-field>
@@ -98,8 +100,10 @@
             solo-inverted
             hide-details
             :items="rol"
+            :rules="rules.required"
             label="Rol"
             v-model="usuario.rol"
+            required
           ></v-select>
         </v-col>
       </v-row>
@@ -109,7 +113,15 @@
       <v-row>
         <v-col cols="12" md="4"> </v-col>
         <v-col cols="12" md="4">
-          <v-btn primary block elevation="7" color="#F29544"> Registrar </v-btn>
+          <v-btn
+            primary
+            block
+            elevation="7"
+            color="#F29544"
+            @click="crearUsuario()"
+          >
+            Registrar
+          </v-btn>
         </v-col>
       </v-row>
     </v-card-actions>
@@ -120,6 +132,7 @@
 export default {
   data: () => ({
     valid: true,
+    show1: false,
     usuario: {
       tipoId: "",
       numeroId: "",
@@ -129,7 +142,6 @@ export default {
       correo: "",
       password: "",
       rol: "",
-      show1: false,
     },
     tipoId: [
       "Cedula",
@@ -142,15 +154,25 @@ export default {
     admin: { codigo: "" },
     rules: {
       required: [(v) => !!v || "El campo es obligatorio"],
-      min: v => v.length >= 8 || 'Min 8 characters',
+      min: (v) => v.length >= 8 || "Min 8 characters",
       emailRules: [
-        v => !!v || 'El campo es obligatorio',
-        v => /.+@.+\..+/.test(v) || 'Correo invalido',
+        (v) => !!v || "El campo es obligatorio",
+        (v) => /.+@.+\..+/.test(v) || "Correo invalido",
       ],
     },
   }),
 
-  methods: {},
+  methods: {
+    crearUsuario() {
+      if (this.$refs.formRegistro.validate()) {
+        console.log("Inicio guardar usuario");
+        let usuario = Object.assign({}, this.usuario);
+        console.log(usuario);
+      } else {
+        console.log("Formato incompleto");
+      }
+    },
+  },
 };
 </script>
 
