@@ -6,6 +6,9 @@
         <v-col cols="12" md="4">
           <center>
             <h1>
+              <v-btn elevation="0" color="#F2E18D" @click="cerrarSesion()">
+                <v-icon> mdi-exit-to-app </v-icon>
+              </v-btn>
               Coordinador
               <v-btn elevation="0" color="#F2E18D" @click="verUsuarios()">
                 <v-icon> mdi-eye </v-icon>
@@ -31,7 +34,10 @@
 export default {
   methods: {
     verUsuarios() {
-      this.$router.push("../Coordinador/VerUsuarios");
+      this.$router.push("../Coordinador/");
+    },
+    cerrarSesion() {
+      this.$router.push("/");
     },
   },
 };

@@ -163,11 +163,12 @@ export default {
   }),
 
   methods: {
-    crearUsuario() {
+    async crearUsuario() {
       if (this.$refs.formRegistro.validate()) {
         console.log("Inicio guardar usuario");
         let usuario = Object.assign({}, this.usuario);
-        console.log(usuario);
+        let response = await this.$axios.post('http://localhost:3001/personas', usuario)
+        console.log(response);
       } else {
         console.log("Formato incompleto");
       }

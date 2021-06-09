@@ -34,7 +34,7 @@
 export default {
   methods: {
     iniciarSesion() {
-      this.$router.push("../login");
+      this.$router.push("/");
     },
     registrar() {
       this.$router.push("../registro");

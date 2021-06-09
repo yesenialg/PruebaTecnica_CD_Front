@@ -26,8 +26,8 @@
       @click="verDetalles()"
     >
       <template v-slot:top> </template>
-      <template v-slot:item.actions="{item}">
-        <v-icon small class = "mr-2" @click="verDetalles(item)"> mdi-eye </v-icon>
+      <template v-slot:item.actions="{ item }">
+        <v-icon small class="mr-2" @click="verDetalles(item)"> mdi-eye </v-icon>
       </template>
     </v-data-table>
   </v-card>
@@ -43,85 +43,36 @@ export default {
           text: "Nombres",
           align: "start",
           sortable: false,
-          value: "name",
+          value: "nombres",
         },
+        { text: "Apellidos", value: "apellidos" },
         { text: "tipo de Identificacion", value: "tipoId" },
-        { text: "numero de Identificacion", value: "id" },
+        { text: "numero de Identificacion", value: "numeroId" },
         { text: "Correo", value: "correo" },
         { text: "Celular", value: "celular" },
         { text: "Rol", value: "rol" },
         { text: "Actions", value: "actions", sortable: false },
       ],
-      usuarios: [
-        {
-          name: "Ana Sanchez",
-          tipoId: "cedula",
-          id: "111222",
-          correo: "ana@gmail.com",
-          celular: 3463123765,
-          rol: "Administrador",
-        },
-        {
-          name: "Ana Sanchez",
-          lastName: "Sanchez",
-          tipoId: "cedula",
-          id: "111222",
-          correo: "ana@gmail.com",
-          celular: 3463123765,
-          rol: "Administrador",
-        },
-        {
-          name: "Ana Sanchez",
-          lastName: "Sanchez",
-          tipoId: "cedula",
-          id: "111222",
-          correo: "ana@gmail.com",
-          celular: 3463123765,
-          rol: "Administrador",
-        },
-        {
-          name: "Ana Sanchez",
-          lastName: "Sanchez",
-          tipoId: "cedula",
-          id: "111222",
-          correo: "ana@gmail.com",
-          celular: 3463123765,
-          rol: "Administrador",
-        },
-        {
-          name: "Ana Sanchez",
-          lastName: "Sanchez",
-          tipoId: "cedula",
-          id: "111222",
-          correo: "ana@gmail.com",
-          celular: 3463123765,
-          rol: "Administrador",
-        },
-        {
-          name: "Ana Sanchez",
-          lastName: "Sanchez",
-          tipoId: "cedula",
-          id: "111222",
-          correo: "ana@gmail.com",
-          celular: 3463123765,
-          rol: "Administrador",
-        },
-        {
-          name: "Ana Sanchez",
-          lastName: "Sanchez",
-          tipoId: "cedula",
-          id: "111222",
-          correo: "ana@gmail.com",
-          celular: 3463123765,
-          rol: "Administrador",
-        },
-      ],
+      usuarios: [],
     };
   },
 
+  beforeMount() {
+    this.verUsuarios();
+  },
+
   methods: {
-    async verDetalles() {
-      this.$router.push("DetallesUsuarios");
+    async verDetalles(item) {
+      this.$router.push("" + item.id);
+    },
+    async verUsuarios() {
+      try {
+        let response = await this.$axios.get("http://localhost:3001/personas");
+        this.usuarios = response.data;
+      console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };

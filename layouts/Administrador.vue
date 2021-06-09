@@ -6,12 +6,15 @@
         <v-col cols="12" md="4">
           <center>
             <h1>
-              <v-btn elevation="0" color="#F2E18D" @click="registrar()">
-                <v-icon> mdi-clipboard-edit-outline </v-icon>
+              <v-btn elevation="0" color="#F2E18D" @click="cerrarSesion()">
+                <v-icon> mdi-exit-to-app </v-icon>
               </v-btn>
               Administrador
               <v-btn elevation="0" color="#F2E18D" @click="verUsuarios()">
                 <v-icon> mdi-eye </v-icon>
+              </v-btn>
+              <v-btn elevation="0" color="#F2E18D" @click="registrar()">
+                <v-icon> mdi-clipboard-edit-outline </v-icon>
               </v-btn>
             </h1>
           </center>
@@ -37,7 +40,10 @@ export default {
       this.$router.push("../Administrador/CrearUsuarios");
     },
     verUsuarios() {
-      this.$router.push("../Administrador/VerUsuarios");
+      this.$router.push("../Administrador/");
+    },
+    cerrarSesion() {
+      this.$router.push("/");
     },
   },
 };

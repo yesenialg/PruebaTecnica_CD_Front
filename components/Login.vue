@@ -107,8 +107,20 @@ export default {
     },
     async ingreso(){
       if (this.$refs.formLogin.validate()) {
-        console.log("Inicio guardar usuario");
-        let usuario = Object.assign({}, this.usuario);
+        let response = await this.$axios.get("http://localhost:3001/personas/");
+        let usuarios = response.data;
+        let encontrado = usuarios.find((x) => {
+          return x.correo === this.usuario.correo && x.password === this.usuario.password && x.rol === this.usuario.rol;
+        });
+        if(encontrado  && this.usuario.rol === "Administrador"){
+          this.$router.push("Administrador/verUsuarios");
+        }else if(encontrado  && this.usuario.rol === "Coordinador"){
+          this.$router.push("Coordinador/verUsuarios");
+        }else if(encontrado  && this.usuario.rol === "Usuario"){
+          this.$router.push("UsuarioRegistrado/Home");
+        }else{
+          //Dialog
+        }
         console.log(usuario);
       } else {
         console.log("Formato incompleto");

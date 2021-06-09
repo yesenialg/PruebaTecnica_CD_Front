@@ -4,7 +4,7 @@
       <v-col cols="12">
         <center>
           <v-spacer></v-spacer>
-          <componenteDetallesUsuario/>
+          <componenteDetallesUsuario admin="true" :id_usuario="id"></componenteDetallesUsuario>
         </center>
       </v-col>
     </v-row>
@@ -12,9 +12,13 @@
 </template>
 
 <script>
-import componenteDetallesUsuario from "../../components/DetallesUsuario";
+import componenteDetallesUsuario from "../../components/DetallesUsuario.vue";
 export default {
-  layout: "Coordinador",
+  async asyncData({ params }) {
+    let id = params.id;
+    return { id };
+  },
+  layout: "Administrador",
   components: {
     componenteDetallesUsuario,
   },
@@ -22,5 +26,4 @@ export default {
 </script>
 
 <style>
-
 </style>

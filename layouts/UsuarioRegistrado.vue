@@ -31,7 +31,7 @@
 export default {
   methods: {
     cerrarSesion() {
-      this.$router.push("../login");
+      this.$router.push("/");
     },
   },
 };

@@ -4,8 +4,6 @@
       <v-toolbar-title class="#0c354a">Datos personales</v-toolbar-title>
       <v-spacer></v-spacer>
 
-      <h1 class="white--text">~</h1>
-
       <div class="text-center">
         <v-dialog v-model="dialog" width="500">
           <template v-slot:activator="{ on, attrs }">
@@ -16,6 +14,7 @@
               small
               v-bind="attrs"
               v-on="on"
+              v-if="admin"
             >
               <v-icon> mdi-trash-can </v-icon>
             </v-btn>
@@ -156,7 +155,7 @@
 
 <script>
 export default {
-  layout: "usuario",
+  props: ["admin", "id_usuario"],
   data: () => ({
     valid: true,
     hasSaved: false,
@@ -191,21 +190,55 @@ export default {
     },
   }),
 
+  beforeMount() {
+    this.verUsuario();
+  },
+
   methods: {
-    eliminarUsuario() {
+    async eliminarUsuario() {
+      try {
+          console.log("Inicio eliminar usuario");
+          let usuario = Object.assign({}, this.usuario);
+          console.log(usuario);
+          let response = await this.$axios.delete(
+            "http://localhost:3001/personas/" + this.id_usuario
+          );
+        } catch (error) {
+          console.log(error);
+        }
       this.$router.push("../Administrador/VerUsuarios");
     },
-    actualizarUsuario() {
+    async actualizarUsuario() {
       if (this.$refs.Usuario.validate()) {
-        console.log("Inicio actualizar usuario");
-        let usuario = Object.assign({}, this.usuario);
-        console.log(usuario);
+        try {
+          console.log("Inicio actualizar usuario");
+          let usuario = Object.assign({}, this.usuario);
+          console.log(usuario);
+          let response = await this.$axios.put(
+            "http://localhost:3001/personas/" + this.id_usuario, usuario
+          );
+          this.usuario = response.data;
+          console.log(response);
+        } catch (error) {
+          console.log(error);
+        }
       } else {
         console.log("Formato incompleto");
       }
     },
     verUsuarios() {
-      this.$router.push("../Administrador/VerUsuarios");
+      this.$router.push("../Administrador/");
+    },
+    async verUsuario() {
+      try {
+        let response = await this.$axios.get(
+          "http://localhost:3001/personas/" + this.id_usuario
+        );
+        this.usuario = response.data;
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
