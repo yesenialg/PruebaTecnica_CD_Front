@@ -40,7 +40,7 @@ export default {
       this.$router.push("../Administrador/CrearUsuarios");
     },
     verUsuarios() {
-      this.$router.push("../Administrador/");
+      this.$router.push("../Administrador/verUsuarios");
     },
     cerrarSesion() {
       this.$router.push("/");

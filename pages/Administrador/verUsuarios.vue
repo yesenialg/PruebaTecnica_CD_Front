@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import componenteVerUsuarios from "../../components/VerUsuarios";
+import componenteVerUsuarios from "../../components/VerUsuarios.vue";
 export default {
-  layout: "Coordinador",
+  layout: "Administrador",
   components: {
     componenteVerUsuarios,
   },

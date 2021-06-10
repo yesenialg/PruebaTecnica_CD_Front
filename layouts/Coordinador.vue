@@ -34,7 +34,7 @@
 export default {
   methods: {
     verUsuarios() {
-      this.$router.push("../Coordinador/");
+      this.$router.push("../Coordinador/verUsuarios");
     },
     cerrarSesion() {
       this.$router.push("/");

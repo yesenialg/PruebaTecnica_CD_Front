@@ -49,15 +49,15 @@
               solo-inverted
               hide-details
               :rules="rules.required"
-              :items="tipoId"
+              :items="id_tipo"
               label="Tipo de identificacion"
-              v-model="usuario.tipoId"
+              v-model="usuario.id_tipo"
               required
             ></v-select>
           </v-col>
           <v-col cols="12" md="6">
             <v-text-field
-              v-model="usuario.numeroId"
+              v-model="usuario.numeroid"
               :rules="rules.required"
               label="Numero de identificacion"
               style="height: 100px"
@@ -163,8 +163,8 @@ export default {
     model: null,
     show1: false,
     usuario: {
-      tipoId: "",
-      numeroId: "",
+      id_tipo: "",
+      numeroid: "",
       nombres: "",
       apellidos: "",
       celular: "",
@@ -172,7 +172,7 @@ export default {
       password: "",
       rol: "",
     },
-    tipoId: [
+    id_tipo: [
       "Cedula",
       "Tarjeta de identidad",
       "Registro civil",
@@ -191,34 +191,57 @@ export default {
   }),
 
   beforeMount() {
+    let token = localStorage.getItem("token");
+    this.$axios.setHeader("token", token);
     this.verUsuario();
   },
 
   methods: {
     async eliminarUsuario() {
       try {
-          console.log("Inicio eliminar usuario");
-          let usuario = Object.assign({}, this.usuario);
-          console.log(usuario);
-          let response = await this.$axios.delete(
-            "http://localhost:3001/personas/" + this.id_usuario
-          );
-        } catch (error) {
-          console.log(error);
-        }
-      this.$router.push("../Administrador/VerUsuarios");
+        console.log("Inicio eliminar usuario");
+
+        let response = await this.$axios.delete(
+          "http://localhost:3001/personaDelete/" + this.id_usuario
+        );
+        this.$router.push("VerUsuarios");
+      } catch (error) {
+        console.log(error);
+      }
     },
     async actualizarUsuario() {
       if (this.$refs.Usuario.validate()) {
         try {
+          if (this.usuario.id_tipo == "Cedula") {
+            this.usuario.id_tipo = "1";
+          } else if (this.usuario.id_tipo == "Tarjeta de identidad") {
+            this.usuario.id_tipo = "2";
+          } else if (this.usuario.id_tipo == "Registro civil") {
+            this.usuario.id_tipo = "3";
+          } else if (this.usuario.id_tipo == "Cedula extranjera") {
+            this.usuario.id_tipo = "4";
+          } else if (this.usuario.id_tipo == "Pasaporte") {
+            this.usuario.id_tipo = "5";
+          }
+
+          if (this.usuario.rol == "Administrador") {
+            this.usuario.rol = "1";
+          } else if (this.usuario.rol == "Coordinador") {
+            this.usuario.rol = "2";
+          } else if (this.usuario.rol == "Usuario") {
+            this.usuario.rol = "3";
+          }
+
           console.log("Inicio actualizar usuario");
           let usuario = Object.assign({}, this.usuario);
           console.log(usuario);
           let response = await this.$axios.put(
-            "http://localhost:3001/personas/" + this.id_usuario, usuario
+            "http://localhost:3001/personaUpdate/" + this.id_usuario,
+            usuario
           );
-          this.usuario = response.data;
-          console.log(response);
+          let info = response.data;
+          console.log(info);
+          this.$router.push("VerUsuarios");
         } catch (error) {
           console.log(error);
         }
@@ -227,17 +250,17 @@ export default {
       }
     },
     verUsuarios() {
-      this.$router.push("../Administrador/");
+      this.$router.push("VerUsuarios");
     },
     async verUsuario() {
       try {
         let response = await this.$axios.get(
-          "http://localhost:3001/personas/" + this.id_usuario
+          "http://localhost:3001/personaGet/" + this.id_usuario
         );
-        this.usuario = response.data;
-        console.log(response);
+        let usuarioBD = response.data.content;
+        this.usuario = usuarioBD[0];
       } catch (error) {
-        console.log(error);
+        this.usuario = {};
       }
     },
   },

@@ -22,7 +22,7 @@
             solo-inverted
             hide-details
             :rules="rules.required"
-            :items="tipoId"
+            :items="id_tipo"
             label="Tipo de identificacion"
             v-model="usuario.tipoId"
             required
@@ -143,7 +143,7 @@ export default {
       password: "",
       rol: "",
     },
-    tipoId: [
+    id_tipo: [
       "Cedula",
       "Tarjeta de identidad",
       "Registro civil",
@@ -162,13 +162,45 @@ export default {
     },
   }),
 
+  beforeMount() {
+    let token = localStorage.getItem("token");
+    this.$axios.setHeader("token", token);
+  },
+
   methods: {
     async crearUsuario() {
       if (this.$refs.formRegistro.validate()) {
+        try {
+          if (this.usuario.tipoId == "Cedula") {
+            this.usuario.tipoId = "1";
+          } else if (this.usuario.tipoId == "Tarjeta de identidad") {
+            this.usuario.tipoId = "2";
+          } else if (this.usuario.tipoId == "Registro civil") {
+            this.usuario.tipoId = "3";
+          } else if (this.usuario.tipoId == "Cedula extranjera") {
+            this.usuario.tipoId = "4";
+          } else if (this.usuario.tipoId == "Pasaporte") {
+            this.usuario.tipoId = "5";
+          }
+
+          if (this.usuario.rol == "Administrador") {
+            this.usuario.rol = "1";
+          } else if (this.usuario.rol == "Coordinador") {
+            this.usuario.rol = "2";
+          } else if (this.usuario.rol == "Usuario") {
+            this.usuario.rol = "3";
+          }
+
         console.log("Inicio guardar usuario");
         let usuario = Object.assign({}, this.usuario);
-        let response = await this.$axios.post('http://localhost:3001/personas', usuario)
+        let response = await this.$axios.post(
+          "http://localhost:3001/personaCreate",
+          usuario
+        );
         console.log(response);
+        } catch (error) {
+          console.log(error);
+        }
       } else {
         console.log("Formato incompleto");
       }

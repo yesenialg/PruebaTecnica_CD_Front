@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import componenteLogin from "../components/Login";
+import componenteLogin from "../components/Login.vue";
 export default {
   layout: "UsuarioGeneral",
   components: {

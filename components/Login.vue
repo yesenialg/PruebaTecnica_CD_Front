@@ -45,6 +45,8 @@
         :items="rol"
         label="Elegir rol"
         v-model="usuario.rol"
+        item-value="id"
+        item-text="nombre"
         required
       ></v-select>
     </v-form>
@@ -98,26 +100,34 @@ export default {
         (v) => /.+@.+\..+/.test(v) || "Correo invalido",
       ],
     },
-    rol: ["Administrador", "Coordinador", "Usuario"],
+    rol: [
+      { id: 1, nombre: "Administrador" },
+      { id: 2, nombre: "Coordinador" },
+      { id: 3, nombre: "Usuario" },
+    ],
   }),
 
   methods: {
     async irRegistro() {
       this.$router.push("registro");
     },
+
     async ingreso(){
       if (this.$refs.formLogin.validate()) {
-        let response = await this.$axios.get("http://localhost:3001/personas/");
-        let usuarios = response.data;
-        let encontrado = usuarios.find((x) => {
-          return x.correo === this.usuario.correo && x.password === this.usuario.password && x.rol === this.usuario.rol;
-        });
-        if(encontrado  && this.usuario.rol === "Administrador"){
-          this.$router.push("Administrador/verUsuarios");
-        }else if(encontrado  && this.usuario.rol === "Coordinador"){
-          this.$router.push("Coordinador/verUsuarios");
-        }else if(encontrado  && this.usuario.rol === "Usuario"){
-          this.$router.push("UsuarioRegistrado/Home");
+        console.log(this.usuario);
+        let response = await this.$axios.post("http://localhost:3001/login/", this.usuario);
+        let usuario = response.data;
+        if(usuario.ok==true){
+          let rol = usuario.content.rol;
+          let token = usuario.content.token;
+          localStorage.setItem("token", token);
+          if (rol == 1){
+            this.$router.push("/Administrador/verUsuarios");
+          }else if (rol == 2){
+            this.$router.push("/Coordinador/verUsuarios");
+          }else if (rol == 3){
+            this.$router.push("/UsuarioRegistrado");
+          }
         }else{
           //Dialog
         }

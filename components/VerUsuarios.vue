@@ -43,11 +43,11 @@ export default {
           text: "Nombres",
           align: "start",
           sortable: false,
-          value: "nombres",
+          value: "nombre",
         },
         { text: "Apellidos", value: "apellidos" },
-        { text: "tipo de Identificacion", value: "tipoId" },
-        { text: "numero de Identificacion", value: "numeroId" },
+        { text: "tipo de Identificacion", value: "id_tipo" },
+        { text: "numero de Identificacion", value: "identificacion" },
         { text: "Correo", value: "correo" },
         { text: "Celular", value: "celular" },
         { text: "Rol", value: "rol" },
@@ -63,15 +63,19 @@ export default {
 
   methods: {
     async verDetalles(item) {
-      this.$router.push("" + item.id);
+      this.$router.push("" + item.id_persona);
     },
     async verUsuarios() {
       try {
-        let response = await this.$axios.get("http://localhost:3001/personas");
-        this.usuarios = response.data;
-      console.log(response);
+        let token = localStorage.getItem("token");
+        let response = await this.$axios.get(
+          "http://localhost:3001/personasGet",
+          { headers: { token} }
+        );
+        let info = response.data.content;
+        this.usuarios = info;
       } catch (error) {
-        console.log(error);
+        this.usuarios = [];
       }
     },
   },
