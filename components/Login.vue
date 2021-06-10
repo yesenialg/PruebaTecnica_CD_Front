@@ -1,5 +1,10 @@
 <template>
   <v-card class="mx-auto" style="width: 600px" elevation="12" color="#F2F2F2">
+      <componenteDialog
+        :estadoDialog="this.dialogError"
+        :tituloMensaje="'Error'"
+        :mensaje="'Verifique que los datos sean los correctos'"/>
+
     <v-toolbar color="#D95F69">
       <v-card-title class="#white--text">
         <center>Iniciar sesion</center>
@@ -55,11 +60,17 @@
     <v-card-actions class="justify-center">
       <v-row>
         <v-col cols="12" md="4">
-          <v-btn primary large block elevation="7" color="#F29544" @click="ingreso()">
+          <v-btn
+            primary
+            large
+            block
+            elevation="7"
+            color="#F29544"
+            @click="ingreso()"
+          >
             Ingresar
           </v-btn>
         </v-col>
-
         <v-col cols="12" md="4">
           <v-btn
             primary
@@ -82,9 +93,14 @@
 </template>
 
 <script>
+import componenteDialog from "../components/Dialog.vue";
 export default {
+  components: {
+    componenteDialog,
+  },
   data: () => ({
     valid: true,
+    dialogError: false,
     show1: false,
     usuario: {
       correo: "",
@@ -112,30 +128,37 @@ export default {
       this.$router.push("registro");
     },
 
-    async ingreso(){
-      if (this.$refs.formLogin.validate()) {
-        console.log(this.usuario);
-        let response = await this.$axios.post("http://localhost:3001/login/", this.usuario);
-        let usuario = response.data;
-        if(usuario.ok==true){
-          let rol = usuario.content.rol;
-          let token = usuario.content.token;
-          localStorage.setItem("token", token);
-          if (rol == 1){
-            this.$router.push("/Administrador/verUsuarios");
-          }else if (rol == 2){
-            this.$router.push("/Coordinador/verUsuarios");
-          }else if (rol == 3){
-            this.$router.push("/UsuarioRegistrado");
+    async ingreso() {
+      try {
+        if (this.$refs.formLogin.validate()) {
+          console.log(this.usuario);
+          let response = await this.$axios.post(
+            "http://localhost:3001/login/",
+            this.usuario
+          );
+          let usuario = response.data;
+          if (usuario.ok == true) {
+            let rol = usuario.content.rol;
+            let token = usuario.content.token;
+            localStorage.setItem("token", token);
+            if (rol == 1) {
+              this.$router.push("/Administrador/verUsuarios");
+            } else if (rol == 2) {
+              this.$router.push("/Coordinador/verUsuarios");
+            } else if (rol == 3) {
+              this.$router.push("/UsuarioRegistrado");
+            }
+          } else {
+            this.dialogError = true;
+            
           }
-        }else{
-          //Dialog
+        } else {
+          console.log("Formato incompleto");
         }
-        console.log(usuario);
-      } else {
-        console.log("Formato incompleto");
+      } catch (error) {
+        this.dialogError = true;
       }
-    }
+    },
   },
 };
 </script>
