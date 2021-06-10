@@ -4,7 +4,7 @@
       <v-col cols="12">
         <center>
           <v-spacer></v-spacer>
-          <componenteRegistro  rolUsuario="true" regresar="verUsuarios"/>
+          <componenteDialog :icono="true" :estadoDialog="true" :tituloMensaje="'Operacion exitosa'" :mensaje="'El usuario se ha agregado exitosamente'"/>
         </center>
       </v-col>
     </v-row>
@@ -12,15 +12,14 @@
 </template>
 
 <script>
-import componenteRegistro from "../../components/Registro";
+import componenteDialog from "../components/Dialog.vue";
 export default {
-  layout: "Administrador",
+  layout: "UsuarioGeneral",
   components: {
-    componenteRegistro,
+    componenteDialog,
   },
 };
 </script>
 
 <style>
-
 </style>

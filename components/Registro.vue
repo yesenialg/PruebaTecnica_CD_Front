@@ -104,6 +104,7 @@
             label="Rol"
             v-model="usuario.rol"
             required
+            v-if="rolUsuario"
           ></v-select>
         </v-col>
       </v-row>
@@ -130,6 +131,7 @@
 
 <script>
 export default {
+  props: ["rolUsuario", "regresar"],
   data: () => ({
     valid: true,
     show1: false,
@@ -141,7 +143,7 @@ export default {
       celular: "",
       correo: "",
       password: "",
-      rol: "",
+      rol: "3",
     },
     id_tipo: [
       "Cedula",
@@ -191,13 +193,20 @@ export default {
             this.usuario.rol = "3";
           }
 
-        console.log("Inicio guardar usuario");
-        let usuario = Object.assign({}, this.usuario);
-        let response = await this.$axios.post(
-          "http://localhost:3001/personaCreate",
-          usuario
-        );
-        console.log(response);
+          console.log("Inicio guardar usuario");
+          let usuario = Object.assign({}, this.usuario);
+          console.log(usuario);
+          let response = await this.$axios.post(
+            "http://localhost:3001/personaCreate",
+            usuario
+          );
+          console.log(response);
+          let resp = response.data;
+        if(resp.ok==true){
+          this.$router.push(this.regresar);
+        }else{
+          Dialog
+        }
         } catch (error) {
           console.log(error);
         }

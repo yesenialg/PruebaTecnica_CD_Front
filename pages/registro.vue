@@ -4,7 +4,7 @@
       <v-col cols="12">
         <center>
           <v-spacer></v-spacer>
-          <componenteRegistro />
+          <componenteRegistro  regresar="/"/>
         </center>
       </v-col>
     </v-row>
