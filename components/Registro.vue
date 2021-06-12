@@ -1,5 +1,11 @@
 <template>
   <v-card class="mx-auto" style="width: 800px" elevation="12" color="#F2F2F2">
+    <componenteDialog
+      v-if="this.dialogError == true"
+      :estadoDialog="true"
+      :tituloMensaje="'Error'"
+      :mensaje="'Ocurrió un error registrando el usuario, verifique que todos los campos estén ingresados y/o que la información sea valida'"
+    />
     <v-toolbar color="#D95F69">
       <v-card-title class="#white--text">
         <center>Registro</center>
@@ -130,10 +136,15 @@
 </template>
 
 <script>
+import componenteDialog from "../components/Dialog.vue";
 export default {
+  components: {
+    componenteDialog,
+  },
   props: ["rolUsuario", "regresar"],
   data: () => ({
     valid: true,
+    dialogError: false,
     show1: false,
     usuario: {
       tipoId: "",
@@ -172,6 +183,7 @@ export default {
   methods: {
     async crearUsuario() {
       if (this.$refs.formRegistro.validate()) {
+        this.dialogError = false;
         try {
           if (this.usuario.tipoId == "Cedula") {
             this.usuario.tipoId = "1";
@@ -202,15 +214,17 @@ export default {
           );
           console.log(response);
           let resp = response.data;
-        if(resp.ok==true){
-          this.$router.push(this.regresar);
-        }else{
-          Dialog
-        }
+          if (resp.ok == true) {
+            this.$router.push(this.regresar);
+          } else {
+            this.dialogError = true;
+          }
         } catch (error) {
+          this.dialogError = true;
           console.log(error);
         }
       } else {
+        this.dialogError = true;
         console.log("Formato incompleto");
       }
     },

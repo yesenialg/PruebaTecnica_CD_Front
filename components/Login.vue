@@ -1,9 +1,11 @@
 <template>
   <v-card class="mx-auto" style="width: 600px" elevation="12" color="#F2F2F2">
-      <componenteDialog
-        :estadoDialog="this.dialogError"
-        :tituloMensaje="'Error'"
-        :mensaje="'Verifique que los datos sean los correctos'"/>
+    <componenteDialog
+      v-if="this.dialogError == true"
+      :estadoDialog="true"
+      :tituloMensaje="'Error'"
+      :mensaje="'Verifique que los datos sean los correctos'"
+    />
 
     <v-toolbar color="#D95F69">
       <v-card-title class="#white--text">
@@ -131,6 +133,7 @@ export default {
     async ingreso() {
       try {
         if (this.$refs.formLogin.validate()) {
+          this.dialogError = false;
           console.log(this.usuario);
           let response = await this.$axios.post(
             "http://localhost:3001/login/",
@@ -150,7 +153,6 @@ export default {
             }
           } else {
             this.dialogError = true;
-            
           }
         } else {
           console.log("Formato incompleto");

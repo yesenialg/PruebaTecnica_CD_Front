@@ -1,5 +1,11 @@
 <template>
   <v-card class="overflow-hidden">
+    <componenteDialog
+      v-if="this.dialogError == true"
+      :estadoDialog="true"
+      :tituloMensaje="'Error'"
+      :mensaje="'Ocurrió un error editando el usuario, verifique que todos los campos estén ingresados y/o que la información sea valida'"
+    />
     <v-toolbar flat>
       <v-toolbar-title class="#0c354a">Datos personales</v-toolbar-title>
       <v-spacer></v-spacer>
@@ -155,11 +161,16 @@
 
 
 <script>
+import componenteDialog from "../components/Dialog.vue";
 export default {
+  components: {
+    componenteDialog,
+  },
   props: ["admin", "id_usuario"],
   data: () => ({
     valid: true,
     hasSaved: false,
+    dialogError: false,
     dialog: false,
     model: null,
     show1: false,
@@ -212,6 +223,7 @@ export default {
     },
     async actualizarUsuario() {
       if (this.$refs.Usuario.validate()) {
+        this.dialogError = false;
         try {
           if (this.usuario.id_tipo == "Cedula") {
             this.usuario.id_tipo = "1";
@@ -242,12 +254,14 @@ export default {
           );
           let info = response.data;
           console.log(info);
-          this.$router.push("VerUsuarios");
+          this.$router.push("verUsuarios");
         } catch (error) {
           console.log(error);
+          this.dialogError = true;
         }
       } else {
         console.log("Formato incompleto");
+          this.dialogError = true;
       }
     },
     verUsuarios() {
