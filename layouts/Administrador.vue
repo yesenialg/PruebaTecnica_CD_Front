@@ -35,7 +35,16 @@
 
 <script>
 export default {
-    methods: {
+  beforeMount() {
+    this.rol();
+  },
+  methods: {
+    rol() {
+      let rol = localStorage.getItem("user-in");
+      if (rol != 1) {
+        this.$router.push("/");
+      }
+    },
     registrar() {
       this.$router.push("../Administrador/CrearUsuarios");
     },

@@ -144,6 +144,7 @@ export default {
             let rol = usuario.content.rol;
             let token = usuario.content.token;
             localStorage.setItem("token", token);
+            localStorage.setItem("user-in", rol);
             if (rol == 1) {
               this.$router.push("/Administrador/verUsuarios");
             } else if (rol == 2) {

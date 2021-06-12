@@ -229,7 +229,7 @@ export default {
             this.usuario.id_tipo = "1";
           } else if (this.usuario.id_tipo == "Tarjeta de identidad") {
             this.usuario.id_tipo = "2";
-          } else if (this.usuario.id_tipo == "Registro Civil") {
+          } else if (this.usuario.id_tipo == "Registro civil") {
             this.usuario.id_tipo = "3";
           } else if (this.usuario.id_tipo == "Cedula extranjera") {
             this.usuario.id_tipo = "4";

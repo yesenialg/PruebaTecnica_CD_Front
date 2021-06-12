@@ -32,7 +32,16 @@
 
 <script>
 export default {
+  beforeMount() {
+    this.rol();
+  },
   methods: {
+    rol() {
+      let rol = localStorage.getItem("user-in");
+      if (rol != 2) {
+        this.$router.push("/");
+      }
+    },
     verUsuarios() {
       this.$router.push("../Coordinador/verUsuarios");
     },

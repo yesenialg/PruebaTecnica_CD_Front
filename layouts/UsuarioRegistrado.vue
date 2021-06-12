@@ -29,7 +29,16 @@
 
 <script>
 export default {
+  beforeMount() {
+      this.rol();
+    },
   methods: {
+    rol() {
+      let rol = localStorage.getItem("user-in");
+      if (rol != 3) {
+        this.$router.push("/");
+      }
+    },
     cerrarSesion() {
       this.$router.push("/");
     },
