@@ -1,7 +1,12 @@
 # PruebaTecnica_CD_Front
 
+--FRONT--
 Prueba Tecnica para Creativos Digitales
+
 --BACK--
+https://github.com/yesenialg/PruebaTecnica_CD_Back
+
+
 
 ## Build Setup
 
